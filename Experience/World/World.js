@@ -39,6 +39,9 @@ export default class World extends EventEmitter {
         if (this.environment) {
             this.environment.switchTheme(theme);
         }
+        if (this.floor) {
+            this.floor.switchTheme(theme);
+        }
     }
 
     // switchDevice(device) {

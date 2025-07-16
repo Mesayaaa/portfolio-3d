@@ -49,38 +49,48 @@ export default class Environment {
     switchTheme(theme) {
         // console.log(this.sunLight);
         if (theme === "dark") {
+            // Dark theme: cooler, dimmer lighting
             GSAP.to(this.sunLight.color, {
-                r: 0.17254901960784313,
-                g: 0.23137254901960785,
-                b: 0.6862745098039216,
+                r: 0.4,  // Warmer blue-white
+                g: 0.5,
+                b: 0.7,
+                duration: 0.5
             });
             GSAP.to(this.ambientLight.color, {
-                r: 0.17254901960784313,
-                g: 0.23137254901960785,
-                b: 0.6862745098039216,
+                r: 0.3,
+                g: 0.4,
+                b: 0.6,
+                duration: 0.5
             });
             GSAP.to(this.sunLight, {
-                intensity: 0.78,
+                intensity: 1.2,
+                duration: 0.5
             });
             GSAP.to(this.ambientLight, {
-                intensity: 0.78,
+                intensity: 0.8,
+                duration: 0.5
             });
         } else {
+            // Light theme: warm, bright lighting
             GSAP.to(this.sunLight.color, {
-                r: 255 / 255,
-                g: 255 / 255,
-                b: 255 / 255,
+                r: 1.0,  // Pure white
+                g: 1.0,
+                b: 1.0,
+                duration: 0.5
             });
             GSAP.to(this.ambientLight.color, {
-                r: 255 / 255,
-                g: 255 / 255,
-                b: 255 / 255,
+                r: 1.0,
+                g: 1.0,
+                b: 1.0,
+                duration: 0.5
             });
             GSAP.to(this.sunLight, {
                 intensity: 3,
+                duration: 0.5
             });
             GSAP.to(this.ambientLight, {
                 intensity: 1,
+                duration: 0.5
             });
         }
     }

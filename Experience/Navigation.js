@@ -33,8 +33,12 @@ export default class Navigation {
             
             this.progressLine.style.width = `${scrollProgress}%`;
             
+            // Check current theme for consistent colors
+            const isDarkMode = document.body.classList.contains('dark-theme');
+            const glowColor = isDarkMode ? '229, 161, 170' : '229, 161, 170';
+            
             // Add pulsing effect when scrolling
-            this.progressLine.style.boxShadow = `0 0 20px rgba(229, 161, 170, ${scrollProgress / 100})`;
+            this.progressLine.style.boxShadow = `0 0 20px rgba(${glowColor}, ${scrollProgress / 100})`;
         });
     }
 
@@ -42,8 +46,11 @@ export default class Navigation {
         this.navLinks.forEach((link, index) => {
             // Add hover effects
             link.addEventListener('mouseenter', () => {
+                const isDarkMode = document.body.classList.contains('dark-theme');
+                const glowColor = isDarkMode ? '229, 161, 170' : '229, 161, 170';
+                
                 link.style.transform = 'scale(1.3)';
-                link.style.boxShadow = '0 0 15px rgba(229, 161, 170, 0.5)';
+                link.style.boxShadow = `0 0 15px rgba(${glowColor}, 0.5)`;
             });
             
             link.addEventListener('mouseleave', () => {
@@ -64,9 +71,12 @@ export default class Navigation {
                 });
                 
                 // Add active class to clicked link
+                const isDarkMode = document.body.classList.contains('dark-theme');
+                const glowColor = isDarkMode ? '229, 161, 170' : '229, 161, 170';
+                
                 link.classList.add('active');
                 link.style.transform = 'scale(1.3)';
-                link.style.boxShadow = '0 0 15px rgba(229, 161, 170, 0.8)';
+                link.style.boxShadow = `0 0 15px rgba(${glowColor}, 0.8)`;
                 
                 // Get target section
                 const targetSection = this.sections[index];

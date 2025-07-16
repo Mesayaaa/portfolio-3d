@@ -16,6 +16,7 @@ export default class Renderer {
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas,
             antialias: true,
+            alpha: false, // Set alpha to false for solid background
         });
 
         this.renderer.physicallyCorrectLights = true;
@@ -26,6 +27,19 @@ export default class Renderer {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setSize(this.sizes.width, this.sizes.height);
         this.renderer.setPixelRatio(this.sizes.pixelRatio);
+        
+        // Set initial background color
+        this.renderer.setClearColor(0xFAF4E5, 1.0); // Light theme default
+    }
+    
+    // Add method to update renderer background
+    updateBackgroundColor(color) {
+        if (this.renderer) {
+            this.renderer.setClearColor(color, 1.0);
+            
+            // Force immediate render to apply changes
+            this.renderer.render(this.scene, this.camera.orthographicCamera);
+        }
     }
 
     resize() {

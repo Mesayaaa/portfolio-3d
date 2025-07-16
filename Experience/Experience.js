@@ -41,6 +41,58 @@ export default class Experience {
         this.time.on("update", () => {
             this.update();
         });
+        
+        // Initialize theme after all components are loaded
+        this.initializeTheme();
+    }
+
+    initializeTheme() {
+        // Apply initial theme to 3D scene
+        this.theme.on("switch", (theme) => {
+            this.handleThemeSwitch(theme);
+        });
+        
+        // Apply current theme immediately
+        this.handleThemeSwitch(this.theme.getCurrentTheme());
+    }
+
+    handleThemeSwitch(theme) {
+        console.log(`🌙 Theme switching to: ${theme}`);
+        
+        // Update scene background
+        if (this.scene) {
+            const bgColor = theme === 'dark' ? 0x1a1a1a : 0xFAF4E5;
+            this.scene.background = new THREE.Color(bgColor);
+            console.log(`🎨 Scene background updated to: ${bgColor.toString(16)}`);
+        }
+
+        // Update renderer clear color using the new method
+        if (this.renderer && this.renderer.renderer) {
+            const clearColor = theme === 'dark' ? 0x1a1a1a : 0xFAF4E5;
+            this.renderer.updateBackgroundColor(clearColor);
+            console.log(`🖥️ Renderer clear color updated to: ${clearColor.toString(16)}`);
+        }
+
+        // Update canvas style background as backup
+        if (this.canvas) {
+            this.canvas.style.backgroundColor = theme === 'dark' ? '#1a1a1a' : '#FAF4E5';
+            console.log(`🎯 Canvas style background updated`);
+        }
+        
+        // Update world environment lighting
+        if (this.world && this.world.environment) {
+            this.world.environment.switchTheme(theme);
+            console.log(`💡 Environment lighting updated`);
+        }
+        
+        // Force canvas visibility
+        const experienceDiv = document.querySelector('.experience');
+        if (experienceDiv) {
+            experienceDiv.style.visibility = 'visible';
+            experienceDiv.style.opacity = '1';
+            experienceDiv.style.display = 'block';
+            console.log(`👁️ Experience container visibility forced`);
+        }
     }
 
     resize() {

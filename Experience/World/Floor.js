@@ -25,13 +25,13 @@ export default class Floor {
 
     setCircles() {
         const geometry = new THREE.CircleGeometry(5, 64);
-        const material = new THREE.MeshStandardMaterial({ color: 0xe5a1aa });
-        const material2 = new THREE.MeshStandardMaterial({ color: 0x8395cd });
-        const material3 = new THREE.MeshStandardMaterial({ color: 0x7ad0ac });
+        this.material1 = new THREE.MeshStandardMaterial({ color: 0xe5a1aa });
+        this.material2 = new THREE.MeshStandardMaterial({ color: 0x8395cd });
+        this.material3 = new THREE.MeshStandardMaterial({ color: 0x7ad0ac });
 
-        this.circleFirst = new THREE.Mesh(geometry, material);
-        this.circleSecond = new THREE.Mesh(geometry, material2);
-        this.circleThird = new THREE.Mesh(geometry, material3);
+        this.circleFirst = new THREE.Mesh(geometry, this.material1);
+        this.circleSecond = new THREE.Mesh(geometry, this.material2);
+        this.circleThird = new THREE.Mesh(geometry, this.material3);
 
         this.circleFirst.position.y = -0.29;
 
@@ -57,6 +57,26 @@ export default class Floor {
         this.scene.add(this.circleFirst);
         this.scene.add(this.circleSecond);
         this.scene.add(this.circleThird);
+    }
+
+    switchTheme(theme) {
+        if (theme === "dark") {
+            // Adjust floor material for dark theme
+            this.material.color.setHex(0x2a2a2a);
+            
+            // Adjust circle materials for dark theme
+            this.material1.color.setHex(0xe5a1aa);
+            this.material2.color.setHex(0x8395cd);
+            this.material3.color.setHex(0x7ad0ac);
+        } else {
+            // Reset to light theme
+            this.material.color.setHex(0xffe6a2);
+            
+            // Reset circle materials
+            this.material1.color.setHex(0xe5a1aa);
+            this.material2.color.setHex(0x8395cd);
+            this.material3.color.setHex(0x7ad0ac);
+        }
     }
 
     resize() {}

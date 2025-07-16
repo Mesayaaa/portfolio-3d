@@ -11,6 +11,31 @@ html, body{
   scroll-behavior: smooth;
 }
 
+/* Prevent scroll reset on button interactions */
+button, .toggle-button, .nav-link {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* Ensure toggle button doesn't cause scroll jumps */
+.toggle-button:focus,
+.toggle-button:active {
+  scroll-behavior: auto;
+}
+
+/* Prevent scroll reset on theme changes */
+.light-theme,
+.dark-theme {
+  scroll-behavior: auto;
+}
+
+/* Restore smooth scrolling after theme transitions */
+.light-theme.theme-transition-complete,
+.dark-theme.theme-transition-complete {
+  scroll-behavior: smooth;
+}
+
 /* Disable scroll during 3D animation */
 body.scroll-disabled {
   overflow: hidden;
@@ -52,14 +77,17 @@ svg{
 
   /* Dark Theme Variables */
   --color-text-dark: #FAF4E5;
-  --color-background-dark: #8395CD;
+  --color-background-dark: #1a1a1a;
+  --color-pink-dark: #e5a1aa;
+  --color-green-dark: #7AD0AC;
+  --color-blue-dark: #8395CD;
   --color-orange-dark: #E67E22;
   
   /* RGB Variables for alpha transparency */
   --color-text-light-rgb: 51, 51, 50;
   --color-background-light-rgb: 250, 244, 229;
   --color-text-dark-rgb: 250, 244, 229;
-  --color-background-dark-rgb: 131, 149, 205;
+  --color-background-dark-rgb: 26, 26, 26;
 }
 
 .light-theme{
@@ -76,12 +104,411 @@ svg{
 .dark-theme{
   --color-text: var(--color-text-dark);
   --color-background: var(--color-background-dark);
-  --color-pink: var(--color-text-dark);
-  --color-green: var(--color-text-dark);
-  --color-blue: var(--color-text-dark);
+  --color-pink: var(--color-pink-dark);
+  --color-green: var(--color-green-dark);
+  --color-blue: var(--color-blue-dark);
   --color-orange: var(--color-orange-dark);
   --color-text-rgb: var(--color-text-dark-rgb);
   --color-background-rgb: var(--color-background-dark-rgb);
+}
+
+/* Dark Mode Specific Styles */
+.dark-theme {
+  background-color: var(--color-background-dark);
+  color: var(--color-text-dark);
+}
+
+/* Loading message dark mode */
+.dark-theme .loading-message {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .loading-content {
+  background: rgba(var(--color-background-dark-rgb), 0.9);
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.1);
+}
+
+.dark-theme .loading-spinner {
+  border: 3px solid rgba(var(--color-text-dark-rgb), 0.3);
+  border-top: 3px solid var(--color-text-dark);
+}
+
+.dark-theme .loading-progress {
+  background: rgba(var(--color-text-dark-rgb), 0.2);
+}
+
+.dark-theme .loading-bar {
+  background: var(--color-text-dark);
+}
+
+/* Scroll indicator dark mode */
+.dark-theme .scroll-indicator .scroll-message {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .scroll-indicator .scroll-arrow {
+  color: var(--color-pink-dark);
+}
+
+/* Toggle bar dark mode */
+.dark-theme .toggle-bar {
+  background: rgba(var(--color-text-dark-rgb), 0.1);
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.2);
+}
+
+.dark-theme .sun-wrapper,
+.dark-theme .moon-wrapper {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .toggle-circle {
+  background-color: var(--color-background-dark);
+}
+
+/* Navigation dark mode */
+.dark-theme .navigation {
+  background: rgba(var(--color-text-dark-rgb), 0.1);
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.2);
+}
+
+.dark-theme .nav-link {
+  border-color: var(--color-text-dark);
+}
+
+.dark-theme .nav-link:hover,
+.dark-theme .nav-link.active {
+  background-color: var(--color-pink-dark);
+  border-color: var(--color-pink-dark);
+}
+
+/* Scroll progress dark mode */
+.dark-theme .scroll-progress {
+  background-color: rgba(var(--color-text-dark-rgb), 0.1);
+}
+
+/* Section backgrounds dark mode - Keep transparent for 3D background */
+.dark-theme .section {
+  background-color: transparent !important;
+}
+
+.dark-theme .section::before {
+  background: linear-gradient(45deg, rgba(var(--color-text-dark-rgb), 0.02), transparent);
+}
+
+/* Progress bars dark mode */
+.dark-theme .progress-bar {
+  background-color: var(--color-pink-dark);
+}
+
+.dark-theme .progress-bar.blue-background {
+  background-color: var(--color-blue-dark);
+}
+
+.dark-theme .progress-bar.orange-background {
+  background-color: var(--color-orange-dark);
+}
+
+.dark-theme .progress-bar.green-background {
+  background-color: var(--color-green-dark);
+}
+
+/* Section text dark mode */
+.dark-theme .section-title-text {
+  color: var(--color-pink-dark);
+}
+
+.dark-theme .section-title-text.blue-text {
+  color: var(--color-blue-dark);
+}
+
+.dark-theme .section-title-text.orange-text {
+  color: var(--color-orange-dark);
+}
+
+.dark-theme .section-title-text.green-text {
+  color: var(--color-green-dark);
+}
+
+.dark-theme .section-heading {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .section-text {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .section-number {
+  color: var(--color-pink-dark);
+}
+
+.dark-theme .section-number.blue-text {
+  color: var(--color-blue-dark);
+}
+
+.dark-theme .section-number.orange-text {
+  color: var(--color-orange-dark);
+}
+
+.dark-theme .section-number.green-text {
+  color: var(--color-green-dark);
+}
+
+/* Hero section dark mode */
+.dark-theme .hero-main-title {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .hero-main-description {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .hero-second-subheading {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .hero-location {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .badge {
+  background: linear-gradient(45deg, var(--color-pink-dark), var(--color-blue-dark));
+  color: white;
+}
+
+/* Stats container dark mode */
+.dark-theme .stats-container {
+  background: linear-gradient(135deg, rgba(var(--color-text-dark-rgb), 0.1), rgba(var(--color-text-dark-rgb), 0.05));
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.1);
+}
+
+.dark-theme .stat-number {
+  color: var(--color-pink-dark);
+}
+
+.dark-theme .stat-label {
+  color: var(--color-text-dark);
+}
+
+/* Skills grid dark mode */
+.dark-theme .skill-card {
+  background: linear-gradient(135deg, rgba(var(--color-text-dark-rgb), 0.08), rgba(var(--color-text-dark-rgb), 0.04));
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.1);
+}
+
+.dark-theme .skill-card:hover {
+  background: linear-gradient(135deg, rgba(var(--color-text-dark-rgb), 0.12), rgba(var(--color-text-dark-rgb), 0.08));
+}
+
+.dark-theme .skill-card h4 {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .skill-card p {
+  color: var(--color-text-dark);
+}
+
+/* Skill items dark mode */
+.dark-theme .skill-item {
+  background-color: rgba(var(--color-text-dark-rgb), 0.05);
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.1);
+}
+
+.dark-theme .skill-item:hover {
+  background-color: rgba(var(--color-text-dark-rgb), 0.08);
+}
+
+.dark-theme .skill-title {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .skill-description {
+  color: var(--color-text-dark);
+}
+
+/* Project items dark mode */
+.dark-theme .project-item {
+  background: linear-gradient(135deg, rgba(var(--color-text-dark-rgb), 0.08), rgba(var(--color-text-dark-rgb), 0.04));
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.1);
+}
+
+.dark-theme .project-item:hover {
+  background: linear-gradient(135deg, rgba(var(--color-text-dark-rgb), 0.12), rgba(var(--color-text-dark-rgb), 0.08));
+}
+
+.dark-theme .project-title {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .project-description {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .tech-tag {
+  background: linear-gradient(45deg, var(--color-blue-dark), var(--color-green-dark));
+  color: white;
+}
+
+.dark-theme .feature-item {
+  background: rgba(var(--color-text-dark-rgb), 0.05);
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.1);
+  color: var(--color-text-dark);
+}
+
+.dark-theme .feature-item:hover {
+  background: rgba(var(--color-text-dark-rgb), 0.1);
+}
+
+/* Skill tags dark mode */
+.dark-theme .skill-tag {
+  background: linear-gradient(135deg, var(--color-pink-dark), var(--color-blue-dark));
+  color: white;
+}
+
+.dark-theme .skill-tag:hover {
+  background: linear-gradient(135deg, var(--color-blue-dark), var(--color-green-dark));
+}
+
+/* Contact items dark mode */
+.dark-theme .contact-item {
+  background: linear-gradient(135deg, rgba(var(--color-text-dark-rgb), 0.1), rgba(var(--color-text-dark-rgb), 0.05));
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.2);
+}
+
+.dark-theme .contact-item:hover {
+  background: linear-gradient(135deg, rgba(var(--color-text-dark-rgb), 0.15), rgba(var(--color-text-dark-rgb), 0.08));
+  border-color: rgba(var(--color-text-dark-rgb), 0.3);
+}
+
+.dark-theme .contact-icon {
+  background: linear-gradient(135deg, var(--color-green-dark), var(--color-blue-dark));
+  color: white;
+}
+
+.dark-theme .contact-title {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .contact-description {
+  color: var(--color-text-dark);
+}
+
+.dark-theme .contact-link {
+  color: var(--color-green-dark);
+  border-color: var(--color-green-dark);
+}
+
+.dark-theme .contact-link::before {
+  background: var(--color-green-dark);
+}
+
+/* Scrollbar dark mode */
+.dark-theme ::-webkit-scrollbar-track {
+  background: var(--color-background-dark);
+}
+
+.dark-theme ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--color-pink-dark), var(--color-blue-dark));
+}
+
+.dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--color-blue-dark), var(--color-green-dark));
+}
+
+/* Text selection dark mode */
+.dark-theme ::selection {
+  background: rgba(229, 161, 170, 0.3);
+  color: var(--color-text-dark);
+}
+
+.dark-theme ::-moz-selection {
+  background: rgba(229, 161, 170, 0.3);
+  color: var(--color-text-dark);
+}
+
+/* Particle canvas dark mode */
+.dark-theme #particle-canvas {
+  opacity: 0.6;
+}
+
+/* Intro text dark mode */
+.dark-theme .intro-text {
+  color: var(--color-text-dark);
+}
+
+/* Arrow SVG dark mode */
+.dark-theme .arrow-svg-wrapper {
+  color: var(--color-text-dark);
+}
+
+/* Section decorations dark mode */
+.dark-theme .section-title-decoration {
+  border-color: var(--color-pink-dark);
+}
+
+.dark-theme .section-title-decoration.blue-border {
+  border-color: var(--color-blue-dark);
+}
+
+.dark-theme .section-title-decoration.orange-border {
+  border-color: var(--color-orange-dark);
+}
+
+.dark-theme .section-title-decoration.green-border {
+  border-color: var(--color-green-dark);
+}
+
+.dark-theme .section-title-decoration.blue-background {
+  background-color: var(--color-blue-dark);
+}
+
+.dark-theme .section-title-decoration.orange-background {
+  background-color: var(--color-orange-dark);
+}
+
+.dark-theme .section-title-decoration.green-background {
+  background-color: var(--color-green-dark);
+}
+
+/* Color utility classes dark mode */
+.dark-theme .blue-text {
+  color: var(--color-blue-dark);
+}
+
+.dark-theme .blue-border {
+  border-color: var(--color-blue-dark);
+}
+
+.dark-theme .blue-background {
+  background-color: var(--color-blue-dark);
+}
+
+.dark-theme .green-text {
+  color: var(--color-green-dark);
+}
+
+.dark-theme .green-border {
+  border-color: var(--color-green-dark);
+}
+
+.dark-theme .green-background {
+  background-color: var(--color-green-dark);
+}
+
+.dark-theme .orange-text {
+  color: var(--color-orange-dark);
+}
+
+.dark-theme .orange-border {
+  border-color: var(--color-orange-dark);
+}
+
+.dark-theme .orange-background {
+  background-color: var(--color-orange-dark);
+}
+
+/* Progress line dark mode */
+.dark-theme .progress-line {
+  background: linear-gradient(90deg, var(--color-pink-dark), var(--color-blue-dark), var(--color-green-dark), var(--color-orange-dark));
 }
 
 /* Experience --------------------------------------------- */
@@ -90,11 +517,34 @@ svg{
   position: fixed;
   width: 100vw;
   height: 100vh;
+  background: var(--color-background);
+  z-index: 1;
+  transition: background-color 0.5s ease;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .experience-canvas{
   width: 100%;
   height: 100%;
+  background: var(--color-background);
+  display: block;
+  transition: background-color 0.5s ease;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Dark mode experience canvas */
+.dark-theme .experience {
+  background: var(--color-background-dark);
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.dark-theme .experience-canvas {
+  background: var(--color-background-dark);
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .hidden{
@@ -103,11 +553,13 @@ svg{
 
 /* Page Itself --------------------------------------------- */
 .page{
-  z-index:99999;
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: auto; /* Ubah dari 100vh ke auto untuk scroll normal */
   overflow-x: hidden;
   overflow-y: auto; /* Pastikan bisa scroll vertikal */
+  background: transparent; /* Transparent to show 3D background */
 }
 
 /* Disable scroll during 3D animation */
@@ -347,7 +799,21 @@ body.scroll-disabled .scroll-indicator.ready {
   border-radius: 999px;
   margin: 0px 16px;
   border: none;
+  outline: none;
   box-shadow: rgba(24, 108, 193, 0.2) 0px 8px 24px;
+  transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.toggle-button:focus {
+  outline: none;
+  box-shadow: rgba(24, 108, 193, 0.4) 0px 8px 24px;
+}
+
+.toggle-button:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
 }
 
 .toggle-circle{
@@ -410,24 +876,6 @@ body.scroll-disabled .scroll-indicator.ready {
   border-color: var(--color-pink);
   opacity: 1;
   transform: scale(1.2);
-}
-
-.nav-link::after{
-  content: attr(data-section);
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: var(--color-background);
-  color: var(--color-text);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .nav-link:hover::after{
@@ -1060,6 +1508,7 @@ body.scroll-disabled .scroll-indicator.ready {
 /* Particle canvas adjustments */
 #particle-canvas{
   opacity: 0.4;
+  transition: opacity 0.5s ease;
 }
 
 /* Enhanced scroll progress */

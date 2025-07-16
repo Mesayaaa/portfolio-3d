@@ -4,9 +4,15 @@ export default class ParticleEffect {
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
         this.mouse = { x: 0, y: 0 };
-        this.colors = ['#e5a1aa', '#8395cd', '#7ad0ac', '#f39c12'];
+        this.isDarkMode = false;
+        
+        // Theme-based colors
+        this.lightColors = ['#e5a1aa', '#8395cd', '#7ad0ac', '#f39c12'];
+        this.darkColors = ['#e5a1aa', '#8395cd', '#7ad0ac', '#e67e22'];
+        this.colors = this.lightColors;
         
         this.init();
+        this.setupThemeListener();
     }
 
     init() {
@@ -25,10 +31,45 @@ export default class ParticleEffect {
         this.canvas.style.height = '100vh';
         this.canvas.style.pointerEvents = 'none';
         this.canvas.style.zIndex = '1';
-        this.canvas.style.opacity = '0.6';
+        this.updateCanvasOpacity();
         
         document.body.appendChild(this.canvas);
         this.resizeCanvas();
+    }
+
+    updateCanvasOpacity() {
+        this.canvas.style.opacity = this.isDarkMode ? '0.6' : '0.4';
+    }
+
+    setupThemeListener() {
+        // Check initial theme
+        this.isDarkMode = document.body.classList.contains('dark-theme');
+        this.updateTheme();
+        
+        // Listen for theme changes
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const newIsDarkMode = document.body.classList.contains('dark-theme');
+                    if (newIsDarkMode !== this.isDarkMode) {
+                        this.isDarkMode = newIsDarkMode;
+                        this.updateTheme();
+                    }
+                }
+            });
+        });
+        
+        observer.observe(document.body, { attributes: true });
+    }
+
+    updateTheme() {
+        this.colors = this.isDarkMode ? this.darkColors : this.lightColors;
+        this.updateCanvasOpacity();
+        
+        // Update existing particles with new colors
+        this.particles.forEach(particle => {
+            particle.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+        });
     }
 
     resizeCanvas() {
@@ -155,6 +196,8 @@ export default class ParticleEffect {
     }
 
     drawConnections() {
+        const connectionColor = this.isDarkMode ? '#e5a1aa' : '#e5a1aa';
+        
         for (let i = 0; i < this.particles.length; i++) {
             for (let j = i + 1; j < this.particles.length; j++) {
                 const particle1 = this.particles[i];
@@ -165,11 +208,11 @@ export default class ParticleEffect {
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 
                 if (distance < 100) {
-                    const opacity = (100 - distance) / 100 * 0.2;
+                    const opacity = (100 - distance) / 100 * (this.isDarkMode ? 0.3 : 0.2);
                     this.ctx.beginPath();
                     this.ctx.moveTo(particle1.x, particle1.y);
                     this.ctx.lineTo(particle2.x, particle2.y);
-                    this.ctx.strokeStyle = this.hexToRgba('#e5a1aa', opacity);
+                    this.ctx.strokeStyle = this.hexToRgba(connectionColor, opacity);
                     this.ctx.lineWidth = 1;
                     this.ctx.stroke();
                 }

@@ -1,0 +1,46 @@
+{
+  "name": "mesaya-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal portfolio website for Mesaya - Front-End Developer",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/mesaya-portfolio"
+  },
+  "keywords": [
+    "portfolio",
+    "frontend",
+    "developer",
+    "react",
+    "vue",
+    "threejs",
+    "webgl",
+    "3d",
+    "javascript",
+    "typescript"
+  ],
+  "author": "Mesaya",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.141.0",
+    "gsap": "^3.10.4",
+    "asscroll": "^2.0.3",
+    "lil-gui": "^0.16.1"
+  },
+  "devDependencies": {
+    "vite": "^2.9.10",
+    "gh-pages": "^4.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

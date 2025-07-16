@@ -1,0 +1,133 @@
+/* Remove all blur effects */
+
+/* Stats Container - Remove blur */
+.stats-container{
+  backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Contact Item - Remove blur */
+.contact-item{
+  backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Skill Cards - Remove blur */
+.skill-card{
+  backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Project Items - Remove blur */
+.project-item{
+  backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Navigation - Remove blur */
+.navigation{
+  backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Nav Links - Remove blur */
+.nav-link{
+  backdrop-filter: none !important;
+}
+
+.nav-link:hover::after{
+  backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Toggle Bar - Remove blur */
+.toggle-bar{
+  backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Toggle Button - Remove blur */
+.toggle-button{
+  backdrop-filter: none !important;
+}
+
+/* Hero Badges - Remove blur */
+.hero-badges{
+  backdrop-filter: none !important;
+}
+
+.badge{
+  backdrop-filter: none !important;
+}
+
+/* Scroll Progress - Remove blur */
+.scroll-progress{
+  backdrop-filter: none !important;
+}
+
+/* Preloader - Remove blur */
+.preloader{
+  backdrop-filter: none !important;
+}
+
+/* Loading - Remove blur */
+.loading{
+  backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Any other glassmorphism effects */
+*[style*="backdrop-filter"]{
+  backdrop-filter: none !important;
+}
+
+/* Remove all blur filters */
+*{
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Improve visibility without blur */
+.stats-container,
+.contact-item,
+.skill-card,
+.project-item,
+.navigation,
+.toggle-bar,
+.loading{
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Make sure text is readable */
+.stats-container,
+.contact-item,
+.skill-card,
+.project-item{
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+.navigation,
+.toggle-bar{
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Dark theme adjustments */
+.dark-theme .stats-container,
+.dark-theme .contact-item,
+.dark-theme .skill-card,
+.dark-theme .project-item{
+  background: rgba(0, 0, 0, 0.8) !important;
+}
+
+.dark-theme .navigation,
+.dark-theme .toggle-bar{
+  background: rgba(0, 0, 0, 0.85) !important;
+}

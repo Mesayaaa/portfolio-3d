@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://mesaya-portfolio.vercel.app/sitemap.xml
+
+# Disallow access to build files
+Disallow: /dist/
+Disallow: /node_modules/
+Disallow: /*.log
+Disallow: /package.json
+Disallow: /vite.config.js
+Disallow: /README.md
+
+# Allow access to important files
+Allow: /favicon.svg
+Allow: /models/
+Allow: /textures/
+Allow: /public/

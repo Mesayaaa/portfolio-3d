@@ -7,8 +7,14 @@
 }
 
 html, body{
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family);
   scroll-behavior: smooth;
+}
+
+/* Disable scroll during 3D animation */
+body.scroll-disabled {
+  overflow: hidden;
+  height: 100vh;
 }
 
 /* Scroll margin untuk navigation target */
@@ -33,6 +39,9 @@ svg{
 }
 
 :root{
+  /* Font Variables */
+  --font-family: "Montserrat", sans-serif;
+  
   /* Light Theme Variables */
   --color-text-light: #333332;
   --color-background-light: #FAF4E5;
@@ -45,6 +54,12 @@ svg{
   --color-text-dark: #FAF4E5;
   --color-background-dark: #8395CD;
   --color-orange-dark: #E67E22;
+  
+  /* RGB Variables for alpha transparency */
+  --color-text-light-rgb: 51, 51, 50;
+  --color-background-light-rgb: 250, 244, 229;
+  --color-text-dark-rgb: 250, 244, 229;
+  --color-background-dark-rgb: 131, 149, 205;
 }
 
 .light-theme{
@@ -54,6 +69,8 @@ svg{
   --color-green: var(--color-green-light);
   --color-blue: var(--color-blue-light);
   --color-orange: var(--color-orange-light);
+  --color-text-rgb: var(--color-text-light-rgb);
+  --color-background-rgb: var(--color-background-light-rgb);
 }
 
 .dark-theme{
@@ -63,6 +80,8 @@ svg{
   --color-green: var(--color-text-dark);
   --color-blue: var(--color-text-dark);
   --color-orange: var(--color-orange-dark);
+  --color-text-rgb: var(--color-text-dark-rgb);
+  --color-background-rgb: var(--color-background-dark-rgb);
 }
 
 /* Experience --------------------------------------------- */
@@ -82,62 +101,6 @@ svg{
   display: none;
 }
 
-/* Preloader */
-.preloader{
-  background-color: var(--color-background-light);
-  width: 100%;
-  height: 100vh;
-  position: fixed;
-  opacity: 1;
-  z-index: 99999999999999999;
-}
-
-.preloader-wrapper{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.loading{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.circle{
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin: 6px;
-  background-color: var(--color-pink-light);
-  animation: load 1s ease-in-out infinite;
-}
-
-.circle:nth-child(2){
-  animation-delay: 0.1s;
-}
-
-.circle:nth-child(3){
-  animation-delay: 0.2s;
-}
-
-@keyframes load {
-  0% {
-    transform: translateY(0)
-  }
-
-  20% {
-    transform: translateY(-12px)
-  }
-
-  40% {
-    transform: translateY(0)
-  }
-  
-}
-
 /* Page Itself --------------------------------------------- */
 .page{
   z-index:99999;
@@ -145,6 +108,83 @@ svg{
   height: auto; /* Ubah dari 100vh ke auto untuk scroll normal */
   overflow-x: hidden;
   overflow-y: auto; /* Pastikan bisa scroll vertikal */
+}
+
+/* Disable scroll during 3D animation */
+.page.scroll-disabled{
+  overflow-y: hidden;
+  height: 100vh;
+}
+
+/* Loading Message Styles */
+.loading-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999999;
+  opacity: 0;
+  pointer-events: none;
+  color: var(--color-text);
+  text-align: center;
+  font-family: var(--font-family);
+}
+
+.loading-content {
+  background: rgba(var(--color-background-rgb), 0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--color-text-rgb), 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(var(--color-text-rgb), 0.3);
+  border-top: 3px solid var(--color-text);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-content p {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.loading-content small {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.loading-progress {
+  width: 200px;
+  height: 4px;
+  background: rgba(var(--color-text-rgb), 0.2);
+  border-radius: 2px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.loading-bar {
+  height: 100%;
+  background: var(--color-text);
+  width: 0%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Hide loading message when scroll is enabled */
+body:not(.scroll-disabled) .loading-message {
+  display: none;
 }
 
 .page-wrapper{
@@ -169,6 +209,88 @@ svg{
   font-size: 16px;
   color: var(--color-text);
   transform: translate(-50%, -50%);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.scroll-message {
+  font-size: 14px;
+  color: var(--color-text);
+  margin-bottom: 10px;
+  text-align: center;
+  animation: fadeInOut 2s ease-in-out infinite;
+}
+
+.scroll-arrow {
+  font-size: 24px;
+  color: var(--color-pink);
+  animation: bounceArrow 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+
+/* Hide scroll indicator when scroll is enabled */
+body:not(.scroll-disabled) .scroll-indicator {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Show scroll indicator when scroll is disabled */
+body.scroll-disabled .scroll-indicator {
+  opacity: 0; /* Initially hidden during loading */
+  animation: none; /* Disable animation until 3D is ready */
+}
+
+/* Show scroll indicator when 3D animation is complete but scroll is still disabled */
+body.scroll-disabled .scroll-indicator.ready {
+  opacity: 1;
+  animation: slideInUp 0.5s ease-out forwards;
+}
+
+/* Enhanced scroll indicator message */
+.scroll-indicator .scroll-message {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+/* Better arrow styling */
+.scroll-indicator .scroll-arrow {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -30%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .arrow-svg-wrapper{

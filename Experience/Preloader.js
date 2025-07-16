@@ -13,6 +13,12 @@ export default class Preloader extends EventEmitter {
         this.camera = this.experience.camera;
         this.world = this.experience.world;
         this.device = this.sizes.device;
+        
+        // Scroll blocking state
+        this.isScrollBlocked = true;
+        
+        // Initialize scroll blocking
+        this.initScrollBlocking();
 
         this.sizes.on("switchdevice", (device) => {
             this.device = device;
@@ -22,6 +28,176 @@ export default class Preloader extends EventEmitter {
             this.setAssets();
             this.playIntro();
         });
+    }
+
+    initScrollBlocking() {
+        // Add scroll-disabled class to body and page
+        document.body.classList.add('scroll-disabled');
+        const page = document.querySelector('.page');
+        if (page) {
+            page.classList.add('scroll-disabled');
+        }
+
+        // Prevent scroll events
+        this.preventScroll = this.preventScroll.bind(this);
+        this.preventKeyboardScroll = this.preventKeyboardScroll.bind(this);
+        
+        // Add event listeners to prevent scrolling
+        window.addEventListener('wheel', this.preventScroll, { passive: false });
+        window.addEventListener('touchmove', this.preventScroll, { passive: false });
+        window.addEventListener('keydown', this.preventKeyboardScroll, { passive: false });
+        
+        // Also prevent scrolling via scrollbar
+        document.addEventListener('scroll', this.preventScroll, { passive: false });
+        
+        // Add loading message
+        this.showLoadingMessage();
+    }
+
+    showLoadingMessage() {
+        // Create or update loading message
+        let loadingMessage = document.querySelector('.loading-message');
+        if (!loadingMessage) {
+            loadingMessage = document.createElement('div');
+            loadingMessage.className = 'loading-message';
+            document.body.appendChild(loadingMessage);
+        }
+        
+        // Show loading message
+        GSAP.to(loadingMessage, {
+            opacity: 1,
+            duration: 0.5,
+            ease: "power2.out"
+        });
+    }
+
+    updateLoadingProgress(progress) {
+        const loadingBar = document.querySelector('.loading-bar');
+        if (loadingBar) {
+            loadingBar.style.width = `${progress * 100}%`;
+        }
+    }
+
+    hideLoadingMessage() {
+        const loadingMessage = document.querySelector('.loading-message');
+        if (loadingMessage) {
+            GSAP.to(loadingMessage, {
+                opacity: 0,
+                duration: 0.5,
+                ease: "power2.out",
+                onComplete: () => {
+                    loadingMessage.remove();
+                }
+            });
+        }
+    }
+
+    preventScroll(e) {
+        if (this.isScrollBlocked) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Reset scroll position to top
+            if (e.type === 'scroll') {
+                window.scrollTo(0, 0);
+            }
+            
+            // Show subtle feedback that scrolling is disabled
+            this.showScrollBlockedFeedback();
+            
+            return false;
+        }
+    }
+
+    showScrollBlockedFeedback() {
+        // Throttle feedback to prevent spam
+        if (this.feedbackTimeout) return;
+        
+        this.feedbackTimeout = setTimeout(() => {
+            this.feedbackTimeout = null;
+        }, 500);
+        
+        // Shake the loading message slightly
+        const loadingMessage = document.querySelector('.loading-message');
+        if (loadingMessage) {
+            GSAP.to(loadingMessage, {
+                x: -5,
+                duration: 0.1,
+                ease: "power2.out",
+                yoyo: true,
+                repeat: 3,
+                onComplete: () => {
+                    GSAP.set(loadingMessage, { x: 0 });
+                }
+            });
+        }
+    }
+
+    preventKeyboardScroll(e) {
+        if (this.isScrollBlocked) {
+            // Prevent arrow keys, space, page up/down, home, end
+            const keys = [32, 33, 34, 35, 36, 37, 38, 39, 40];
+            if (keys.includes(e.keyCode)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }
+    }
+
+    enableScroll() {
+        this.isScrollBlocked = false;
+        
+        // Remove scroll-disabled class from body and page
+        document.body.classList.remove('scroll-disabled');
+        const page = document.querySelector('.page');
+        if (page) {
+            page.classList.remove('scroll-disabled');
+        }
+
+        // Remove event listeners
+        window.removeEventListener('wheel', this.preventScroll);
+        window.removeEventListener('touchmove', this.preventScroll);
+        window.removeEventListener('keydown', this.preventKeyboardScroll);
+        document.removeEventListener('scroll', this.preventScroll);
+        
+        // Hide loading message
+        this.hideLoadingMessage();
+        
+        // Add smooth fade-in for scrollable content
+        this.animateScrollableContent();
+    }
+
+    showScrollIndicator() {
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (scrollIndicator) {
+            scrollIndicator.classList.add('ready');
+            
+            // Add pulsing animation to make it more noticeable
+            GSAP.to(scrollIndicator, {
+                scale: 1.1,
+                duration: 1.5,
+                ease: "power2.inOut",
+                yoyo: true,
+                repeat: -1
+            });
+        }
+    }
+
+    animateScrollableContent() {
+        // Animate page content to indicate it's now scrollable
+        const pageWrapper = document.querySelector('.page-wrapper');
+        if (pageWrapper) {
+            GSAP.fromTo(pageWrapper, 
+                { y: 20, opacity: 0.8 },
+                { 
+                    y: 0, 
+                    opacity: 1, 
+                    duration: 0.6,
+                    ease: "power2.out" 
+                }
+            );
+        }
     }
 
     setAssets() {
@@ -102,7 +278,20 @@ export default class Preloader extends EventEmitter {
                     ".navigation",
                     {
                         opacity: 1,
-                        onComplete: resolve,
+                    },
+                    "same"
+                )
+                .to(
+                    ".scroll-indicator",
+                    {
+                        opacity: 1,
+                        delay: 2,
+                        duration: 1,
+                        onComplete: () => {
+                            // Add ready class and pulsing animation
+                            this.showScrollIndicator();
+                            resolve();
+                        },
                     },
                     "same"
                 );
@@ -127,6 +316,14 @@ export default class Preloader extends EventEmitter {
                     ".arrow-svg-wrapper",
                     {
                         opacity: 0,
+                    },
+                    "fadeout"
+                )
+                .to(
+                    ".scroll-indicator",
+                    {
+                        opacity: 0,
+                        duration: 0.5,
                     },
                     "fadeout"
                 )
@@ -334,13 +531,24 @@ export default class Preloader extends EventEmitter {
                 )
                 .to(".arrow-svg-wrapper", {
                     opacity: 1,
-                    onComplete: resolve,
+                    onComplete: () => {
+                        // Hide scroll indicator when animation completes
+                        const scrollIndicator = document.querySelector('.scroll-indicator');
+                        if (scrollIndicator) {
+                            GSAP.to(scrollIndicator, {
+                                opacity: 0,
+                                duration: 0.3,
+                                ease: "power2.out"
+                            });
+                        }
+                        resolve();
+                    },
                 });
         });
     }
 
     onScroll(e) {
-        if (e.deltaY > 0) {
+        if (e.deltaY > 0 && this.moveFlag) {
             this.removeEventListeners();
             this.playSecondIntro();
         }
@@ -353,7 +561,7 @@ export default class Preloader extends EventEmitter {
     onTouchMove(e) {
         let currentY = e.touches[0].clientY;
         let difference = this.initalY - currentY;
-        if (difference > 0) {
+        if (difference > 0 && this.moveFlag) {
             console.log("swipped up");
             this.removeEventListeners();
             this.playSecondIntro();
@@ -369,7 +577,9 @@ export default class Preloader extends EventEmitter {
 
     async playIntro() {
         this.scaleFlag = true;
+        this.updateLoadingProgress(0.3); // 30% when starting first intro
         await this.firstIntro();
+        this.updateLoadingProgress(0.7); // 70% when first intro completes
         this.moveFlag = true;
         this.scrollOnceEvent = this.onScroll.bind(this);
         this.touchStart = this.onTouch.bind(this);
@@ -380,9 +590,18 @@ export default class Preloader extends EventEmitter {
     }
     async playSecondIntro() {
         this.moveFlag = false;
+        this.updateLoadingProgress(0.9); // 90% when starting second intro
         await this.secondIntro();
+        this.updateLoadingProgress(1.0); // 100% when second intro completes
         this.scaleFlag = false;
-        this.emit("enablecontrols");
+        
+        // Add a small delay to ensure all 3D animations are complete
+        setTimeout(() => {
+            // Enable scroll after 3D animation is complete
+            this.enableScroll();
+            
+            this.emit("enablecontrols");
+        }, 500); // 500ms delay to ensure smooth transition
     }
 
     move() {

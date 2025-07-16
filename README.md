@@ -5,9 +5,6 @@ Welcome to my interactive 3D portfolio website! This project showcases my skills
 ## 🌐 Live Demo
 **[View Live Portfolio](https://mesayaaa.github.io/portfolio-3d/)**
 
-## 📸 Preview
-![Portfolio Preview](https://via.placeholder.com/800x400/1a1a1a/ffffff?text=3D+Portfolio+Preview)
-
 > An immersive 3D portfolio experience featuring glassmorphism design, smooth animations, and responsive layout.
 
 ## 🚀 Features

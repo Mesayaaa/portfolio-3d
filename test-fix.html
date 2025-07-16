@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Animation Fix Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        
+        .test-element {
+            background: #f0f0f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .animatedis {
+            display: inline-block;
+        }
+        
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .typing-complete {
+            border-right: 2px solid #e5a1aa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Text Animation Fix Test</h1>
+    
+    <div class="test-element">
+        <h2>Test 1: Original Text (Should not be garbled)</h2>
+        <p class="hero-main-title">Front-End Developer</p>
+        <p class="hero-main-description">Creating beautiful and functional web experiences</p>
+    </div>
+    
+    <div class="test-element">
+        <h2>Test 2: Scroll Animation Elements</h2>
+        <p class="section-text">This text should fade in once and not be affected by multiple scrolls</p>
+        <p class="section-heading">This heading should also remain intact</p>
+    </div>
+    
+    <div class="test-element">
+        <h2>Test 3: Counter Element</h2>
+        <span class="stat-number">5+</span> Projects Completed
+    </div>
+    
+    <div style="height: 200vh;">
+        <p>Scroll down and back up to test the animations...</p>
+    </div>
+    
+    <script type="module">
+        import TextAnimations from './Experience/TextAnimations.js';
+        import convert from './Experience/Utils/covertDivsToSpans.js';
+        
+        // Test the convert function
+        console.log('Testing convert function...');
+        const titleElement = document.querySelector('.hero-main-title');
+        const descElement = document.querySelector('.hero-main-description');
+        
+        // Convert elements (this should happen in preloader)
+        convert(titleElement);
+        convert(descElement);
+        
+        // Try to convert again (should not double-convert)
+        convert(titleElement);
+        convert(descElement);
+        
+        console.log('Title element after conversion:', titleElement.innerHTML);
+        console.log('Description element after conversion:', descElement.innerHTML);
+        
+        // Initialize text animations
+        const textAnimations = new TextAnimations();
+        
+        // Test scrolling multiple times
+        window.addEventListener('scroll', () => {
+            console.log('Scrolling...');
+        });
+    </script>
+</body>
+</html>

@@ -19,9 +19,12 @@ export default class TextAnimations {
             // Add typing cursor effect
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
+                    if (entry.isIntersecting && !entry.target.dataset.typingComplete) {
                         entry.target.classList.add('typing-complete');
+                        entry.target.dataset.typingComplete = 'true';
                         this.typeWriter(entry.target);
+                        // Stop observing after first animation
+                        observer.unobserve(entry.target);
                     }
                 });
             });
@@ -32,22 +35,49 @@ export default class TextAnimations {
     }
 
     typeWriter(element) {
-        const text = element.textContent;
-        element.textContent = '';
-        element.style.borderRight = '2px solid var(--color-pink)';
+        // Check if element has already been processed by covertDivsToSpans
+        const hasSpans = element.querySelectorAll('.animatedis').length > 0;
         
-        let i = 0;
-        const timer = setInterval(() => {
-            if (i < text.length) {
-                element.textContent += text.charAt(i);
-                i++;
-            } else {
-                clearInterval(timer);
-                setTimeout(() => {
-                    element.style.borderRight = 'none';
-                }, 500);
-            }
-        }, 100);
+        if (hasSpans) {
+            // If element has spans, use the original text from data attribute or innerText
+            const originalText = element.dataset.originalText || element.innerText;
+            element.dataset.originalText = originalText;
+            
+            // Clear the element and rebuild with typing effect
+            element.innerHTML = '';
+            element.style.borderRight = '2px solid var(--color-pink)';
+            
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < originalText.length) {
+                    element.textContent += originalText.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    setTimeout(() => {
+                        element.style.borderRight = 'none';
+                    }, 500);
+                }
+            }, 100);
+        } else {
+            // Original implementation for elements without spans
+            const text = element.textContent;
+            element.textContent = '';
+            element.style.borderRight = '2px solid var(--color-pink)';
+            
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    setTimeout(() => {
+                        element.style.borderRight = 'none';
+                    }, 500);
+                }
+            }, 100);
+        }
     }
 
     setupScrollAnimations() {
@@ -55,8 +85,11 @@ export default class TextAnimations {
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
+                if (entry.isIntersecting && !entry.target.dataset.animated) {
                     entry.target.classList.add('fade-in');
+                    entry.target.dataset.animated = 'true';
+                    // Stop observing after first animation
+                    observer.unobserve(entry.target);
                 }
             });
         }, {
@@ -88,10 +121,13 @@ export default class TextAnimations {
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
+                if (entry.isIntersecting && !entry.target.dataset.counted) {
                     const counter = entry.target;
                     const target = parseInt(counter.textContent.replace('+', ''));
+                    counter.dataset.counted = 'true';
                     this.animateCounter(counter, target);
+                    // Stop observing after first animation
+                    observer.unobserve(entry.target);
                 }
             });
         }, {

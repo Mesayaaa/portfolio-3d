@@ -2,8 +2,8 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
 export default defineConfig({
-  // Base public path
-  base: './',
+  // Base public path for GitHub Pages
+  base: '/portfolio-3d/',
   
   // Build optimizations
   build: {

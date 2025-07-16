@@ -17,6 +17,9 @@ export default class Preloader extends EventEmitter {
         // Scroll blocking state
         this.isScrollBlocked = true;
         
+        // Initialize white preloader
+        this.initWhitePreloader();
+        
         // Initialize scroll blocking
         this.initScrollBlocking();
 
@@ -28,6 +31,60 @@ export default class Preloader extends EventEmitter {
             this.setAssets();
             this.playIntro();
         });
+    }
+
+    initWhitePreloader() {
+        // Show white preloader initially
+        const whitePreloader = document.querySelector('.white-preloader');
+        if (whitePreloader) {
+            whitePreloader.style.opacity = '1';
+            whitePreloader.style.visibility = 'visible';
+        }
+        
+        // Update progress during resource loading
+        this.resources.on('progress', (progress) => {
+            this.updateWhitePreloaderProgress(progress);
+        });
+    }
+
+    updateWhitePreloaderProgress(progress) {
+        const preloaderBar = document.querySelector('.preloader-bar');
+        const preloaderText = document.querySelector('.preloader-text');
+        
+        if (preloaderBar) {
+            preloaderBar.style.width = `${progress * 100}%`;
+        }
+        
+        if (preloaderText) {
+            const percentage = Math.round(progress * 100);
+            preloaderText.textContent = `Loading Experience... ${percentage}%`;
+        }
+    }
+
+    hideWhitePreloader() {
+        const whitePreloader = document.querySelector('.white-preloader');
+        const mainContent = document.querySelector('.main-content');
+        
+        if (whitePreloader) {
+            GSAP.to(whitePreloader, {
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                onComplete: () => {
+                    whitePreloader.classList.add('hidden');
+                    whitePreloader.style.display = 'none';
+                    
+                    // Show main content with smooth transition
+                    if (mainContent) {
+                        GSAP.to(mainContent, {
+                            opacity: 1,
+                            duration: 0.5,
+                            ease: "power2.out"
+                        });
+                    }
+                }
+            });
+        }
     }
 
     initScrollBlocking() {
@@ -214,15 +271,21 @@ export default class Preloader extends EventEmitter {
 
     firstIntro() {
         return new Promise((resolve) => {
+            // Hide white preloader after a small delay to ensure it's visible
+            setTimeout(() => {
+                this.hideWhitePreloader();
+            }, 1000);
+            
             this.timeline = new GSAP.timeline();
             this.timeline.set(".animatedis", { y: 0, yPercent: 100 });
             this.timeline.to(".preloader", {
                 opacity: 0,
-                delay: 1,
+                delay: 1.5, // Slightly longer delay to sync with white preloader
                 onComplete: () => {
-                    document
-                        .querySelector(".preloader")
-                        .classList.add("hidden");
+                    const preloader = document.querySelector(".preloader");
+                    if (preloader) {
+                        preloader.classList.add("hidden");
+                    }
                 },
             });
             if (this.device === "desktop") {

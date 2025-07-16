@@ -29,6 +29,9 @@ export default class Resources extends EventEmitter {
         this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
     }
     startLoading() {
+        // Emit initial progress
+        this.emit("progress", 0);
+        
         for (const asset of this.assets) {
             if (asset.type === "glbModel") {
                 this.loaders.gltfLoader.load(asset.path, (file) => {
@@ -63,6 +66,10 @@ export default class Resources extends EventEmitter {
     singleAssetLoaded(asset, file) {
         this.items[asset.name] = file;
         this.loaded++;
+
+        // Emit progress event
+        const progress = this.loaded / this.queue;
+        this.emit("progress", progress);
 
         if (this.loaded === this.queue) {
             this.emit("ready");

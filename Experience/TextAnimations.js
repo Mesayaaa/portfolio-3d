@@ -83,18 +83,26 @@ export default class TextAnimations {
     setupScrollAnimations() {
         const animatedElements = document.querySelectorAll('.section-text, .section-heading, .skill-card, .project-item');
         
+        // Throttle untuk animasi scroll
+        let animationThrottle = 0;
+        
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !entry.target.dataset.animated) {
-                    entry.target.classList.add('fade-in');
-                    entry.target.dataset.animated = 'true';
-                    // Stop observing after first animation
-                    observer.unobserve(entry.target);
+                    // Throttle animasi untuk performa
+                    if (Date.now() - animationThrottle > 50) { // 20fps throttle
+                        animationThrottle = Date.now();
+                        
+                        entry.target.classList.add('fade-in');
+                        entry.target.dataset.animated = 'true';
+                        // Stop observing after first animation
+                        observer.unobserve(entry.target);
+                    }
                 }
             });
         }, {
             threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
+            rootMargin: '0px 0px -50px 0px' // Kurangi margin untuk trigger lebih tepat
         });
 
         animatedElements.forEach(element => {

@@ -2034,3 +2034,55 @@ body {
     padding: 20px;
   }
 }
+
+/* Optimasi performa untuk section visible */
+.section-visible {
+    will-change: transform, opacity;
+}
+
+.section-visible .section-text,
+.section-visible .section-heading,
+.section-visible .skill-card,
+.section-visible .project-item {
+    will-change: transform, opacity;
+}
+
+/* Optimasi animasi fade-in */
+.fade-in {
+    animation: fadeInUp 0.6s ease-out;
+    transform: translate3d(0, 0, 0); /* Force hardware acceleration */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* Optimasi hover effects */
+.skill-card,
+.project-item {
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skill-card:hover,
+.project-item:hover {
+    transform: translate3d(0, -5px, 0);
+}
+
+/* Optimasi skill tags */
+.skill-tag {
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skill-tag:hover {
+    transform: translate3d(0, -2px, 0);
+}

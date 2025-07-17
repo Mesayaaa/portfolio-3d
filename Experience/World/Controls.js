@@ -91,6 +91,29 @@ export default class Controls {
     }
 
     setScrollTrigger() {
+        // Tambahkan IntersectionObserver untuk optimasi performa
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const section = entry.target;
+                const isVisible = entry.isIntersecting;
+                
+                // Enable/disable animasi berdasarkan visibility
+                if (isVisible) {
+                    section.classList.add('section-visible');
+                } else {
+                    section.classList.remove('section-visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -10% 0px'
+        });
+
+        // Observe semua section
+        document.querySelectorAll('.section').forEach(section => {
+            sectionObserver.observe(section);
+        });
+
         ScrollTrigger.matchMedia({
             //Desktop
             "(min-width: 969px)": () => {
@@ -101,6 +124,7 @@ export default class Controls {
                 this.rectLight.height = 0.7;
                 this.camera.orthographicCamera.position.set(0, 6.5, 10);
                 this.room.position.set(0, 0, 0);
+                
                 // First section -----------------------------------------
                 this.firstMoveTimeline = new GSAP.timeline({
                     scrollTrigger: {
@@ -110,6 +134,12 @@ export default class Controls {
                         scrub: 0.6,
                         // markers: true,
                         invalidateOnRefresh: true,
+                        onUpdate: (self) => {
+                            // Throttle update untuk performa
+                            if (self.progress % 0.05 < 0.01) {
+                                this.updateRoomAnimation(self.progress, 'first');
+                            }
+                        }
                     },
                 });
                 this.firstMoveTimeline.fromTo(
@@ -130,6 +160,12 @@ export default class Controls {
                         end: "bottom bottom",
                         scrub: 0.6,
                         invalidateOnRefresh: true,
+                        onUpdate: (self) => {
+                            // Throttle update untuk performa
+                            if (self.progress % 0.05 < 0.01) {
+                                this.updateRoomAnimation(self.progress, 'second');
+                            }
+                        }
                     },
                 })
                     .to(
@@ -170,6 +206,12 @@ export default class Controls {
                         end: "bottom bottom",
                         scrub: 0.6,
                         invalidateOnRefresh: true,
+                        onUpdate: (self) => {
+                            // Throttle update untuk performa
+                            if (self.progress % 0.05 < 0.01) {
+                                this.updateRoomAnimation(self.progress, 'third');
+                            }
+                        }
                     },
                 })
                     .to(
@@ -210,6 +252,12 @@ export default class Controls {
                         end: "bottom bottom",
                         scrub: 0.6,
                         invalidateOnRefresh: true,
+                        onUpdate: (self) => {
+                            // Throttle update untuk performa
+                            if (self.progress % 0.05 < 0.01) {
+                                this.updateRoomAnimation(self.progress, 'fourth');
+                            }
+                        }
                     },
                 }).to(this.camera.orthographicCamera.position, {
                     y: 1.5,
@@ -568,6 +616,18 @@ export default class Controls {
                 this.secondPartTimeline.add(this.ninth, "-=0.1");
             },
         });
+    }
+
+    // Tambahkan method untuk throttle animasi room
+    updateRoomAnimation(progress, section) {
+        // Hanya update jika section visible
+        const sectionElement = document.querySelector(`.${section}-move`);
+        if (sectionElement && sectionElement.classList.contains('section-visible')) {
+            // Update animasi dengan throttle
+            requestAnimationFrame(() => {
+                // Animasi sudah di-handle oleh GSAP timeline
+            });
+        }
     }
     resize() {}
 

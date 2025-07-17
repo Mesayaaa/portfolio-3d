@@ -65,6 +65,87 @@
     }
     </script>
     
+    <!-- Inline Critical CSS for Preloader and Experience Canvas -->
+    <style>
+      :root {
+        --font-family: "Montserrat", sans-serif;
+        --color-text-light: #333332;
+        --color-background-light: #FAF4E5;
+        --color-pink-light: #e5a1aa;
+        --color-green-light: #7AD0AC;
+        --color-blue-light: #8395CD;
+        --color-orange-light: #F39C12;
+        --color-text-dark: #FAF4E5;
+        --color-background-dark: #1a1a1a;
+        --color-pink-dark: #e5a1aa;
+        --color-green-dark: #7AD0AC;
+        --color-blue-dark: #8395CD;
+        --color-orange-dark: #E67E22;
+        --color-text-light-rgb: 51, 51, 50;
+        --color-background-light-rgb: 250, 244, 229;
+        --color-text-dark-rgb: 250, 244, 229;
+        --color-background-dark-rgb: 26, 26, 26;
+      }
+      body, html {
+        font-family: var(--font-family);
+        scroll-behavior: smooth;
+      }
+      .experience {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        z-index: 1;
+        background: var(--color-background-light);
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      .experience-canvas {
+        width: 100vw; height: 100vh;
+        display: block;
+        background: var(--color-background-light);
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      .loading-message {
+        position: fixed;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 999999;
+        opacity: 0;
+        pointer-events: none;
+        color: var(--color-text);
+        text-align: center;
+        font-family: var(--font-family);
+      }
+      .loading-content {
+        background: rgba(var(--color-background-rgb), 0.9);
+        padding: 2rem;
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(var(--color-text-rgb), 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+      .loading-spinner {
+        width: 40px; height: 40px;
+        border: 3px solid rgba(var(--color-text-rgb), 0.3);
+        border-top: 3px solid var(--color-text);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .loading-bar {
+        height: 100%;
+        background: var(--color-text);
+        width: 0%;
+        border-radius: 2px;
+        transition: width 0.3s ease;
+      }
+      .hidden { display: none; }
+    </style>
+    
   </head>
   <body class="light-theme">
     

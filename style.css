@@ -186,10 +186,6 @@ svg{
   background-color: rgba(var(--color-text-dark-rgb), 0.1);
 }
 
-/* Section backgrounds dark mode - Keep transparent for 3D background */
-.dark-theme .section {
-  background-color: transparent !important;
-}
 
 .dark-theme .section::before {
   background: linear-gradient(45deg, rgba(var(--color-text-dark-rgb), 0.02), transparent);
@@ -718,6 +714,10 @@ body.scroll-disabled .scroll-indicator {
 body.scroll-disabled .scroll-indicator.ready {
   opacity: 1;
   animation: slideInUp 0.5s ease-out forwards;
+}
+
+body.dark-theme .section {
+  background: #23272f !important;
 }
 
 /* Enhanced scroll indicator message */
@@ -2085,4 +2085,164 @@ body {
 
 .skill-tag:hover {
     transform: translate3d(0, -2px, 0);
+}
+
+/* =====================
+   DARK THEME FOR FORMS
+   ===================== */
+.dark-theme input,
+.dark-theme textarea,
+.dark-theme select {
+  background: rgba(var(--color-background-dark-rgb), 0.95);
+  color: var(--color-text-dark);
+  border: 1px solid rgba(var(--color-text-dark-rgb), 0.3);
+  box-shadow: 0 0 8px rgba(var(--color-text-dark-rgb), 0.08);
+  transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+.dark-theme input:focus,
+.dark-theme textarea:focus,
+.dark-theme select:focus {
+  outline: none;
+  border-color: var(--color-pink-dark);
+  box-shadow: 0 0 0 2px rgba(229, 161, 170, 0.3);
+}
+
+.dark-theme input::placeholder,
+.dark-theme textarea::placeholder {
+  color: rgba(var(--color-text-dark-rgb), 0.6);
+  opacity: 1;
+}
+
+.dark-theme input:disabled,
+.dark-theme textarea:disabled,
+.dark-theme select:disabled {
+  background: rgba(var(--color-background-dark-rgb), 0.6);
+  color: rgba(var(--color-text-dark-rgb), 0.4);
+  border-color: rgba(var(--color-text-dark-rgb), 0.15);
+  cursor: not-allowed;
+}
+
+.dark-theme button:not(.toggle-button) {
+  background: linear-gradient(90deg, var(--color-pink-dark), var(--color-blue-dark));
+  color: #1a1a1a;
+  border: 1px solid var(--color-pink-dark);
+  box-shadow: 0 2px 8px rgba(var(--color-text-dark-rgb), 0.08);
+  transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+.dark-theme button:not(.toggle-button):hover,
+.dark-theme button:not(.toggle-button):focus {
+  background: linear-gradient(90deg, var(--color-blue-dark), var(--color-green-dark));
+  color: #1a1a1a;
+  border-color: var(--color-blue-dark);
+  box-shadow: 0 4px 16px rgba(var(--color-blue-dark), 0.15);
+}
+
+.dark-theme button:not(.toggle-button):active {
+  background: linear-gradient(90deg, var(--color-green-dark), var(--color-orange-dark));
+  color: #1a1a1a;
+  border-color: var(--color-green-dark);
+}
+
+.dark-theme button:not(.toggle-button):disabled {
+  background: rgba(var(--color-background-dark-rgb), 0.5);
+  color: rgba(var(--color-text-dark-rgb), 0.4);
+  border-color: rgba(var(--color-text-dark-rgb), 0.15);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Link hover/focus in dark mode */
+.dark-theme a,
+.dark-theme .link {
+  color: var(--color-blue-dark);
+  transition: color 0.3s;
+}
+.dark-theme a:hover,
+.dark-theme .link:hover,
+.dark-theme a:focus,
+.dark-theme .link:focus {
+  color: var(--color-pink-dark);
+  text-decoration: underline;
+}
+
+/* Icon/SVG in dark mode */
+.dark-theme svg,
+.dark-theme .icon {
+  color: var(--color-text-dark);
+  fill: var(--color-text-dark);
+  transition: color 0.3s, fill 0.3s;
+}
+
+/* Enhanced section container for dark mode - solid color */
+.dark-theme .section {
+  background: #23272f !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  border-radius: 24px;
+  border: 1px solid rgba(250,244,229,0.08);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* Center section titles and decorations */
+.section-intro-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.section-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.section-title-text {
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Make section titles and decorations larger */
+.section-title-text {
+  font-size: 64px;
+  line-height: 1.1;
+}
+
+.section-number {
+  font-size: 48px;
+  bottom: 30px;
+  right: 0;
+}
+
+/* Perbesar dekorasi di belakang judul section */
+.section-title-decoration.styleOne,
+.section-title-decoration.styleTwo,
+.section-title-decoration.styleThree {
+  max-width: 420px;
+  height: 90px;
+  border-width: 2px;
+}
+
+.section-title-text.orange-text {
+  position: relative;
+  top: -28px;
+}
+
+@media (max-width: 968px) {
+  .section-title-text {
+    font-size: 40px;
+  }
+  .section-number {
+    font-size: 32px;
+  }
+  .section-title-decoration.styleOne,
+  .section-title-decoration.styleTwo,
+  .section-title-decoration.styleThree {
+    max-width: 260px;
+    height: 60px;
+  }
 }

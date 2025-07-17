@@ -4,6 +4,11 @@ export default class TextAnimations {
     }
 
     init() {
+        // Tambahkan class 'fade-in' ke semua skill-card agar langsung muncul
+        document.querySelectorAll('.skill-card').forEach(card => {
+            card.classList.add('fade-in');
+            card.dataset.animated = 'true';
+        });
         this.setupTypingEffect();
         this.setupScrollAnimations();
         this.setupSkillTagInteractions();

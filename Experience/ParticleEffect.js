@@ -105,15 +105,24 @@ export default class ParticleEffect {
             this.mouse.y = e.clientY;
         });
 
-        // Add particles on scroll
+        // Throttle scroll event for adding particles
+        let lastScroll = 0;
         window.addEventListener('scroll', () => {
-            if (Math.random() < 0.1) {
-                this.addParticle();
+            const now = Date.now();
+            if (now - lastScroll > 50) { // 20 fps throttle
+                lastScroll = now;
+                if (Math.random() < 0.1 && this.particles.length < 200) {
+                    this.addParticle();
+                }
             }
         });
     }
 
     addParticle() {
+        // Batasi jumlah partikel maksimum
+        if (this.particles.length >= 200) {
+            this.particles.shift(); // Hapus partikel tertua
+        }
         this.particles.push({
             x: this.mouse.x + (Math.random() - 0.5) * 100,
             y: this.mouse.y + (Math.random() - 0.5) * 100,

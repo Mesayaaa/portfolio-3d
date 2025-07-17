@@ -45,7 +45,10 @@ export default class Controls {
             disableRaf: true,
         });
 
-        GSAP.ticker.add(asscroll.update);
+        // Tambahkan GSAP.ticker hanya jika ASScroll diaktifkan
+        if (!GSAP.ticker._listeners.includes(asscroll.update)) {
+            GSAP.ticker.add(asscroll.update);
+        }
 
         ScrollTrigger.defaults({
             scroller: asscroll.containerElement,
@@ -328,6 +331,8 @@ export default class Controls {
             all: () => {
                 this.sections = document.querySelectorAll(".section");
                 this.sections.forEach((section) => {
+                    // Tambahkan will-change untuk optimasi rendering
+                    section.style.willChange = "transform, border-radius";
                     this.progressWrapper =
                         section.querySelector(".progress-wrapper");
                     this.progressBar = section.querySelector(".progress-bar");

@@ -204,6 +204,51 @@
               </div>
             </div>
 
+            <style>
+              /* Remove any existing continuous animations and add hover-only effects */
+              .stats-container {
+                animation: none !important;
+              }
+              
+              .stat-item {
+                animation: none !important;
+                transition: all 0.3s ease !important;
+              }
+              
+              
+              .stat-number {
+                animation: none !important;
+                transition: all 0.3s ease !important;
+              }
+              
+              .stat-item:hover .stat-number {
+                color: #007acc !important;
+                transform: scale(1.1) !important;
+              }
+              
+              .stat-label {
+                animation: none !important;
+                transition: all 0.3s ease !important;
+              }
+              
+              .stat-item:hover .stat-label {
+                color: #555 !important;
+              }
+              
+              /* Dark theme hover effects */
+              .dark-theme .stat-item:hover .stat-number {
+                color: #4fc3f7 !important;
+              }
+              
+              .dark-theme .stat-item:hover .stat-label {
+                color: #e0e0e0 !important;
+              }
+              
+              .dark-theme .stat-item:hover {
+                box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1) !important;
+              }
+            </style>
+
             <h3 class="section-heading">What I Do Best 🚀</h3>
             <div class="skills-grid">
               <div class="skill-card">
@@ -324,6 +369,27 @@
                 </div>
               </div>
             </div>
+
+            <style>
+              /* Nonaktifkan semua animasi dan transisi di section project */
+              .project-grid,
+              .project-item,
+              .project-title,
+              .tech-tag,
+              .feature-item {
+                animation: none !important;
+                transition: none !important;
+              }
+              .project-item:hover,
+              .project-title:hover,
+              .tech-tag:hover,
+              .feature-item:hover {
+                transform: none !important;
+                box-shadow: none !important;
+                color: inherit !important;
+                background: inherit !important;
+              }
+            </style>
           </div>
         </section>
 

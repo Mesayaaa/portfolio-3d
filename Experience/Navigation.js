@@ -26,19 +26,21 @@ export default class Navigation {
     }
 
     setupScrollProgress() {
+        let lastScroll = 0;
         window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollProgress = (scrollTop / scrollHeight) * 100;
-            
-            this.progressLine.style.width = `${scrollProgress}%`;
-            
-            // Check current theme for consistent colors
-            const isDarkMode = document.body.classList.contains('dark-theme');
-            const glowColor = isDarkMode ? '229, 161, 170' : '229, 161, 170';
-            
-            // Add pulsing effect when scrolling
-            this.progressLine.style.boxShadow = `0 0 20px rgba(${glowColor}, ${scrollProgress / 100})`;
+            const now = Date.now();
+            if (now - lastScroll > 16) { // 60fps throttle
+                lastScroll = now;
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollProgress = (scrollTop / scrollHeight) * 100;
+                this.progressLine.style.width = `${scrollProgress}%`;
+                // Check current theme for consistent colors
+                const isDarkMode = document.body.classList.contains('dark-theme');
+                const glowColor = isDarkMode ? '229, 161, 170' : '229, 161, 170';
+                // Add pulsing effect when scrolling
+                this.progressLine.style.boxShadow = `0 0 20px rgba(${glowColor}, ${scrollProgress / 100})`;
+            }
         });
     }
 
@@ -114,8 +116,13 @@ export default class Navigation {
         });
 
         // Update active navigation on scroll - tanpa navigation otomatis
+        let lastNavScroll = 0;
         window.addEventListener('scroll', () => {
-            this.updateActiveNavigation();
+            const now = Date.now();
+            if (now - lastNavScroll > 16) { // 60fps throttle
+                lastNavScroll = now;
+                this.updateActiveNavigation();
+            }
         });
     }
 

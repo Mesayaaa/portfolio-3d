@@ -8,5 +8,6 @@ export default [
         name: "screen",
         type: "videoTexture",
         path: "/textures/AI.mp4",
+        lazy: true,
     },
 ];

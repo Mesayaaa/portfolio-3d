@@ -52,6 +52,13 @@ export default class Room {
             }
 
             if (child.name === "Computer") {
+                // Lazy load video texture jika belum di-load
+                if (this.resources.assets) {
+                    const screenAsset = this.resources.assets.find(a => a.name === "screen" && a.lazy);
+                    if (screenAsset) {
+                        this.resources.loadAndPlayVideo("screen", screenAsset.path);
+                    }
+                }
                 child.children[1].material = new THREE.MeshBasicMaterial({
                     map: this.resources.items.screen,
                 });

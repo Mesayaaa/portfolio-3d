@@ -38,21 +38,19 @@ export default class Resources extends EventEmitter {
                     this.singleAssetLoaded(asset, file);
                 });
             } else if (asset.type === "videoTexture") {
-                this.video = {};
-                this.videoTexture = {};
+                this.video = this.video || {};
+                this.videoTexture = this.videoTexture || {};
 
+                // Lazy load: hanya buat elemen video, tidak set src/autoplay/play dulu
                 this.video[asset.name] = document.createElement("video");
-                this.video[asset.name].src = asset.path;
                 this.video[asset.name].muted = true;
                 this.video[asset.name].playsInline = true;
-                this.video[asset.name].autoplay = true;
                 this.video[asset.name].loop = true;
-                this.video[asset.name].play();
+                // Tidak set src/autoplay/play di sini
 
                 this.videoTexture[asset.name] = new THREE.VideoTexture(
                     this.video[asset.name]
                 );
-                // this.videoTexture[asset.name].flipY = false;
                 this.videoTexture[asset.name].minFilter = THREE.NearestFilter;
                 this.videoTexture[asset.name].magFilter = THREE.NearestFilter;
                 this.videoTexture[asset.name].generateMipmaps = false;
@@ -73,6 +71,15 @@ export default class Resources extends EventEmitter {
 
         if (this.loaded === this.queue) {
             this.emit("ready");
+        }
+    }
+
+    // Fungsi lazy load dan play video saat benar-benar dibutuhkan
+    loadAndPlayVideo(name, path) {
+        if (this.video && this.video[name] && !this.video[name].src) {
+            this.video[name].src = path;
+            this.video[name].load();
+            this.video[name].play();
         }
     }
 }
